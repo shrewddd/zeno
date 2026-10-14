@@ -1,3 +1,5 @@
+import { Index } from "./pages";
+
 export default function App() {
-	return null;
+	return <Index/>;
 }
