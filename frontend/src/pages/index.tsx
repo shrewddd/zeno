@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input"
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 type Problem = {
   operator: "+" | "-" | "/" | "*"
@@ -11,6 +11,7 @@ type Problem = {
 const operators = ["+", "-", "/", "*"] as const;
 const minValue = 2
 const maxValue = 100
+const visibleDigitCount = 6
 
 const getRandomInRange = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -45,7 +46,6 @@ const getProblems = (count: number) => {
 
 export const Index = () => {
   const [text, setText] = useState("");
-  const answerRef = useRef<HTMLDivElement>(null)
   const [problemCount, setProblemCount] = useState(30)
   const [problemIndex, setProblemIndex] = useState(0)
 
@@ -69,22 +69,18 @@ export const Index = () => {
     };
   }, [handleKeyPress]);
 
-  useLayoutEffect(() => {
-    const answer = answerRef.current
-    if (answer) {
-      answer.scrollLeft = answer.scrollWidth
-    }
-  }, [text])
-
   const currentProblem = problems[problemIndex]
 
 	return (
-		<div className="text-4xl font-semibold text-white bg-black h-screen w-screen flex flex-col justify-center items-center">
+		<div className="text-4xl font-semibold m-auto">
       <div className="flex flex-row gap-2">
         <div className="shrink-0 whitespace-nowrap">{currentProblem.leftValue} {currentProblem.operator} {currentProblem.rightValue} = </div>
-        <div ref={answerRef} className="w-[6ch] shrink-0 overflow-hidden whitespace-nowrap tabular-nums">
+        <div
+          className="shrink-0 overflow-hidden whitespace-nowrap tabular-nums"
+          style={{ width: `${visibleDigitCount + 1}ch` }}
+        >
           <div className="flex w-max items-center">
-            <span>{text}</span>
+            <span>{text.slice(-visibleDigitCount)}</span>
             <span
               aria-hidden="true"
               className="answer-caret h-[1em] w-[1ch] shrink-0 bg-current"

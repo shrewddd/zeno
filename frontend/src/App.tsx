@@ -1,5 +1,10 @@
+import { Layout } from "./components/layout";
 import { Index } from "./pages";
 
 export default function App() {
-	return <Index/>;
+	return (
+    <Layout>
+      <Index/>
+    </Layout>
+  );
 }
