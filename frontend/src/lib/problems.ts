@@ -22,8 +22,8 @@ export const getProblems = (count: number) => {
   const problems: Problem[] = []
   while (problems.length < count) {
     const operator: "+" | "-" | "/" | "*" = operators[Math.floor(Math.random() * (operators.length))]
-    let leftValue = getRandomInRange(operatorRanges[operator].left.minValue, operatorRanges[operator].right.maxValue);
-    const rightValue = getRandomInRange(operatorRanges[operator].left.minValue, operatorRanges[operator].right.maxValue);
+    let leftValue = getRandomInRange(operatorRanges[operator].left.minValue, operatorRanges[operator].left.maxValue);
+    const rightValue = getRandomInRange(operatorRanges[operator].right.minValue, operatorRanges[operator].right.maxValue);
     let result = 0;
     switch (operator) {
       case '+':

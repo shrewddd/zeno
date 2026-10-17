@@ -1,8 +1,9 @@
+import { useTimer } from "@/hooks/useTimer";
 import { getProblems } from "@/lib/problems";
 import { useCallback, useEffect, useMemo, useState } from "react"
 
-
 const visibleDigitCount = 6;
+const timeLimit = 120;
 
 // This whole file contains code that is not even close to being good, or being deployed
 // I am fully aware of all of the issues, but there is something freeing about it
@@ -11,8 +12,10 @@ const visibleDigitCount = 6;
 export const Index = () => {
   const [text, setText] = useState("");
   const [score, setScore] = useState(0);
-  const [problemCount, setProblemCount] = useState(30)
-  const [problemIndex, setProblemIndex] = useState(0)
+  const [problemCount, setProblemCount] = useState(30);
+  const [problemIndex, setProblemIndex] = useState(0);
+
+  const timer = useTimer(timeLimit)
 
   const problems = useMemo(() => {
     return getProblems(problemCount)
@@ -26,6 +29,7 @@ export const Index = () => {
 
     if (/^[\d.-]$/.test(event.key)) {
       nextText = `${text}${event.key}`
+      timer.start()
     } else if(event.key === "Backspace") {
       nextText = `${text.slice(0, -1)}`;
     }
@@ -47,7 +51,6 @@ export const Index = () => {
     };
   }, [handleKeyPress]);
 
-
 	return (
     <div className="text-4xl font-semibold m-auto">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center">
@@ -68,7 +71,10 @@ export const Index = () => {
             />
           </div>
         </div>
-        </div>
+        <div></div>
+        <div>{timer.time}</div>
+        <div></div>
+      </div>
     </div>
 	);
 };
